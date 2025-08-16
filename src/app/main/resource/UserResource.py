@@ -10,7 +10,7 @@ class UserResource:
         self.router = APIRouter(prefix="/user")
         self.router.add_api_route("/hello", self.hello, methods=["GET"])
         self.router.add_api_route("/{id}", self.get_user, methods=["GET"], response_model=UserDtoOut)
-
+        self.router.add_api_route("/add", self.add_user, methods=["POST"], response_model=UserDtoIn)
     def get_router(self):
         return self.router
     
@@ -21,3 +21,9 @@ class UserResource:
         repository = UserRepository(session)
         self.service = UserService(repository)
         return self.service.get_user(id)
+    
+    async def add_user(self, user:UserDtoIn, session:Session=Depends(get_session)):
+        repository = UserRepository(session)
+        self.service = UserService(repository)
+        added_user = self.service.addUser(user)
+        return added_user

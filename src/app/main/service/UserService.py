@@ -20,11 +20,14 @@ class UserService:
             address="None"
         )
         user_dto_out = UserDtoOut(
-            user.id,
-            user.name,
-            user.surname,
-            user.email,
-            user.address,
-            user.phone_number
+            id=user.id,
+            name=user.name,
+            surname=user.surname,
+            email=user.email,
+            address=user.address,
+            phone_number=user.phone_number
         )
         return user_dto_out
+    
+    def addUser(self, user:UserDtoIn):
+        return self.user_repository.add_user(user)
