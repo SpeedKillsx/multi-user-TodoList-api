@@ -8,22 +8,23 @@ from sqlmodel import Session
 class UserResource:
     def __init__(self):
         self.router = APIRouter(prefix="/user")
-        self.router.add_api_route("/hello", self.hello, methods=["GET"])
         self.router.add_api_route("/{id}", self.get_user, methods=["GET"], response_model=UserDtoOut)
-        self.router.add_api_route("/add", self.add_user, methods=["POST"], response_model=UserDtoIn)
+        self.router.add_api_route("/add", self.add_user, methods=["POST"], response_model=UserDtoOut)
+        
     def get_router(self):
         return self.router
     
-    async def hello(self):
-        return "Hello"
-
-    async def get_user(self, id:int, session:Session=Depends(get_session)):
+    def _get_service(self, session: Session):
         repository = UserRepository(session)
-        self.service = UserService(repository)
-        return self.service.get_user(id)
+        service = UserService(repository)
+        return service
+    
+    async def get_user(self, id:int, session:Session=Depends(get_session))->UserDtoOut:
+        service = self._get_service(session)
+        return service.get_user(id)
     
     async def add_user(self, user:UserDtoIn, session:Session=Depends(get_session)):
-        repository = UserRepository(session)
-        self.service = UserService(repository)
-        added_user = self.service.addUser(user)
+        service = self._get_service(session)
+        added_user = service.addUser(user)
         return added_user
+    

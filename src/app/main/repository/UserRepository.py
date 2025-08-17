@@ -13,7 +13,7 @@ class UserRepository():
             return None
         return user
     
-    def add_user(self, user:UserDtoIn):
+    def add_user(self, user:UserDtoIn)->User:
         print("Adding user...")
         statement = select(exists().where(User.email == user.email))
         result = self.db_session.exec(statement).first()
