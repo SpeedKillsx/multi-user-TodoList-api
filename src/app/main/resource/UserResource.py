@@ -23,7 +23,7 @@ class UserResource:
         service = self._get_service(session)
         return service.get_user(id)
     
-    async def add_user(self, user:UserDtoIn, session:Session=Depends(get_session)):
+    async def add_user(self, user:UserDtoIn, session:Session=Depends(get_session))->UserDtoOut:
         service = self._get_service(session)
         added_user = service.addUser(user)
         return added_user
