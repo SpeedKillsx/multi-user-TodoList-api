@@ -1,5 +1,5 @@
 from sqlmodel import create_engine, SQLModel, Session
-from src.app.main.model import User
+from src.app.main.model import User, TodoList
 class DatabaseConfig():
     def __init__(self, database_name:str, database_password:str):
         
