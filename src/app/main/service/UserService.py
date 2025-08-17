@@ -25,7 +25,16 @@ class UserService:
         user_dto_out = self.user_mapper.to_Dto_Out(user)
         return user_dto_out
     
-    def addUser(self, user:UserDtoIn)->UserDtoOut:
-        user:User = self.user_repository.add_user(user)
-        user_dto_out = self.user_mapper.to_Dto_Out(user)
+    def addUser(self, userIn:UserDtoIn)->UserDtoOut:
+        
+        exist:User = self.user_repository.get_user_by_email(userIn.email)
+        
+        if exist:
+            raise Exception("L'utilisateur existe deja")
+        
+        user:User = self.user_mapper.to_Entity(user_dto=userIn)
+        
+        user_add = self.user_repository.add_user(user)
+        user_dto_out = self.user_mapper.to_Dto_Out(user_add)
+        
         return user_dto_out

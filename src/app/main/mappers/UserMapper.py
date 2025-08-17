@@ -27,6 +27,6 @@ class UserMapper:
         
     def to_Entity(self, user_dto:UserDtoIn):
         user = User()
-        for field in ["name", "surname", "email", "address", "phone_number"]:
+        for field in ["name", "surname", "email", "address", "phone_number", "password"]:
             setattr(user, field, getattr(user_dto, field))
         return user

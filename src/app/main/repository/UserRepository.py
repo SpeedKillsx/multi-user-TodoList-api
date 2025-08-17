@@ -12,26 +12,16 @@ class UserRepository():
             print(f"No User fond")
             return None
         return user
-    
-    def add_user(self, user:UserDtoIn)->User:
-        print("Adding user...")
-        statement = select(exists().where(User.email == user.email))
+    def _get_session(self):
+        return self.db_session
+    def get_user_by_email(self, email:str)->User:
+        statement = select(User).where(User.email == email)
         result = self.db_session.exec(statement).first()
-        if result:
-            print("User already exists")
-            return None
+        return result
         
-        user_to_add : User = User(
-            name=user.name,
-            surname=user.surname,
-            email=user.email,
-            address=user.address,
-            phone_number = user.phone_number,
-            password=user.password
-        )
-        
-        self.db_session.add(user_to_add)
+    def add_user(self, user:User)->User:
+        print("Adding user...")
+        self.db_session.add(user)
         self.db_session.commit()
-        self.db_session.refresh(user_to_add)
-        
-        return user_to_add
+        self.db_session.refresh(user)
+        return user
