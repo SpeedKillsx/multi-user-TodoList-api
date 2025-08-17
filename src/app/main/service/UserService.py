@@ -22,14 +22,7 @@ class UserService:
             address="None"
         )
             return self.user_mapper.to_Dto_Out(user_none)
-        user_dto_out = UserDtoOut(
-            id=user.id,
-            name=user.name,
-            surname=user.surname,
-            email=user.email,
-            address=user.address,
-            phone_number=user.phone_number
-        )
+        user_dto_out = self.user_mapper.to_Dto_Out(user)
         return user_dto_out
     
     def addUser(self, user:UserDtoIn)->UserDtoOut:
