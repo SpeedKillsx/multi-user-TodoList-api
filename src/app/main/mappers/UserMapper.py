@@ -21,12 +21,13 @@ class UserMapper:
         "surname": user_entity.surname,
         "email": user_entity.email,
         "address": user_entity.address,
-        "phone_number": user_entity.phone_number
+        "phone_number": user_entity.phone_number,
+        "todos": user_entity.todos
         }
         return UserDtoOut.model_validate(data)
         
     def to_Entity(self, user_dto:UserDtoIn):
         user = User()
-        for field in ["name", "surname", "email", "address", "phone_number", "password"]:
+        for field in ["name", "surname", "email", "address", "phone_number", "password", "todos"]:
             setattr(user, field, getattr(user_dto, field))
         return user
