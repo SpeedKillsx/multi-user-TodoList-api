@@ -1,6 +1,6 @@
 from src.app.main.model.User import User
 from src.app.main.dto.UserDtoIn import UserDtoIn
-from sqlmodel import select, delete, Session, exists
+from sqlmodel import select, delete, Session, exists, and_
 class UserRepository():
     def __init__(self, db_session:Session):
         self.db_session = db_session
@@ -25,3 +25,18 @@ class UserRepository():
         self.db_session.commit()
         self.db_session.refresh(user)
         return user
+    
+    def find_user_by_credentials(self, user:User)->User:
+        statement = select(User).where(
+            and_(
+                User.email == user.email,
+                User.password == user.password
+            )
+        )
+        
+        user:User = self.db_session.exec(statement=statement).first()
+        
+        return user
+    
+    def find_todolist_by_userId(self, id:int):
+        pass

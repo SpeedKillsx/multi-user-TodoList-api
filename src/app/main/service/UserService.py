@@ -3,6 +3,7 @@ from src.app.main.model.User import User
 from src.app.main.dto.UserDtoIn import UserDtoIn
 from src.app.main.dto.UserDtoOut import UserDtoOut
 from src.app.main.mappers.UserMapper import UserMapper
+from src.app.main.dto.LoginDtoIn import LoginDtoIn
 class UserService:
     def __init__(self, user_repository:UserRepository):
         self.user_repository = user_repository
@@ -37,4 +38,16 @@ class UserService:
         user_add = self.user_repository.add_user(user)
         user_dto_out = self.user_mapper.to_Dto_Out(user_add)
         
+        return user_dto_out
+    
+    def connect_user(self, login_dto_in: LoginDtoIn)->UserDtoOut:
+        user_exist:User = self.user_repository.get_user_by_email(login_dto_in.email)
+        if not user_exist:
+            raise Exception(f"No user found with email : {login_dto_in.email}")
+        user:User = self.user_repository.find_user_by_credentials(user=user_exist)
+        
+        if not user:
+            raise Exception("Could not connect to the application")
+            
+        user_dto_out:UserDtoOut = self.user_mapper.to_Dto_Out(user_entity=user)
         return user_dto_out

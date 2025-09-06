@@ -1,5 +1,6 @@
 from src.app.main.dto.UserDtoIn import UserDtoIn
 from src.app.main.dto.UserDtoOut import UserDtoOut
+from src.app.main.dto.LoginDtoIn import LoginDtoIn
 from src.app.main.service.UserService import UserService
 from src.app.main.repository.UserRepository import UserRepository
 from src.app.main.dependancy.database_dependancy import get_session
@@ -10,6 +11,7 @@ class UserResource:
         self.router = APIRouter(prefix="/user")
         self.router.add_api_route("/{id}", self.get_user, methods=["GET"], response_model=UserDtoOut)
         self.router.add_api_route("/add", self.add_user, methods=["POST"], response_model=UserDtoOut)
+        self.router.add_api_route("/connect", self.user_connection, methods=["POST"], response_model=UserDtoOut)
         
     def get_router(self):
         return self.router
@@ -27,4 +29,9 @@ class UserResource:
         service = self._get_service(session)
         added_user = service.addUser(user)
         return added_user
+    
+    async def user_connection(self, login_dto_in:LoginDtoIn, session:Session=Depends(get_session))->UserDtoOut:
+        service = self._get_service(session=session)
+        connected_user = service.connect_user(login_dto_in=login_dto_in)
+        return connected_user
     
