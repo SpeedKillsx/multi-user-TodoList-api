@@ -1,6 +1,6 @@
 from src.app.main.model.User import User
 from src.app.main.dto.UserDtoIn import UserDtoIn
-from sqlmodel import select, delete, Session, exists, and_
+from sqlmodel import select, Session, and_
 class UserRepository():
     def __init__(self, db_session:Session):
         self.db_session = db_session
@@ -14,6 +14,7 @@ class UserRepository():
         return user
     def _get_session(self):
         return self.db_session
+    
     def get_user_by_email(self, email:str)->User:
         statement = select(User).where(User.email == email)
         result = self.db_session.exec(statement).first()
