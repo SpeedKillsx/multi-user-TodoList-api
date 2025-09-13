@@ -37,6 +37,5 @@ class UserResource:
     async def user_connection(self, login_dto_in:LoginDtoIn, session:Session=Depends(get_session)):
         service = self._get_service(session=session)
         connected_user:UserLogInDtouOut = service.connect_user(login_dto_in=login_dto_in)
-        
         return connected_user
     
