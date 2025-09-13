@@ -6,22 +6,21 @@ class TodoListMapper:
     
     def to_dto_in(self, todo_list:TodoList)->TodoListDtoIn:
         mapping = {
-            "description":todo_list.description,
-            "is_done": todo_list.is_done,
             "id_user": todo_list.id_user,
+            "todolist_name": todo_list.todolist_name
         }
         
         return TodoListDtoIn.model_validate(mapping)
     
     def to_dto_out(self, todo_list:TodoList)->TodoListDtoOut:
         mapping = {
-            "description": todo_list.description,
-            "is_done": todo_list.is_done
+            "todolist_name": todo_list.todolist_name,
+            "tasks": todo_list.tasks
         }
         return TodoListDtoOut.model_validate(mapping)
     
     def to_entity(self, todo_list_dto_in:TodoListDtoIn ):
         todo_list = TodoList()
-        for field in ["description","is_done", "id_user"]:
+        for field in ["todolist_name", "id_user"]:
             setattr(todo_list, field, getattr(todo_list_dto_in, field))
         return todo_list

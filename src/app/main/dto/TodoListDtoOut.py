@@ -1,6 +1,7 @@
 from sqlmodel import SQLModel
+from src.app.main.model.Task import Task
 class TodoListDtoOut(SQLModel):
-    description:str = None
-    is_done:bool=False
+    todolist_name:str
+    tasks:list[Task]
 
     

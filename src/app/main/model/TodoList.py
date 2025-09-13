@@ -3,8 +3,8 @@ from typing import Optional
 
 class TodoList(SQLModel, table=True):
     id:int|None = Field(default=None, primary_key=True, unique=True)
-    description:Optional[str] = None
-    is_done: bool = Field(default=False)
+    todolist_name : str
     id_user:int = Field(foreign_key="user.id", default=None)
     
+    tasks: list['Task']| None = Relationship(back_populates="todo_list")
     user: "User" = Relationship(back_populates="todos")
