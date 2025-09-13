@@ -11,3 +11,9 @@ class TodoListRepository:
         self.session_db.commit()
         self.session_db.flush(todo_list)
         return todo_list
+    
+    def find_todolist_by_id(self, id_todolist:int)->TodoList:
+        statement = select(TodoList).where(TodoList.id == id_todolist)
+        todo:TodoList = self.session_db.exec(statement=statement).first()
+        return todo
+            

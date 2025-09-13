@@ -9,13 +9,19 @@ class TodoListService:
     def __init__(self, todo_list_repository:TodoListRepository):
         self.todo_list_repository = todo_list_repository
         self.todo_list_mapper = TodoListMapper()
-    def get_todo_list(self):
-        pass
+    
     
     def insert_todo(self, todolist_dto_in:TodoListDtoIn)->TodoListDtoOut:
         todolist:TodoList = self.todo_list_mapper.to_entity(todolist_dto_in)
         
         todolist_add = self.todo_list_repository.insert_todo(todolist)
-        print("Todo Added")
+        
         return self.todo_list_mapper.to_dto_out(todolist_add)
 
+    def find_by_id(self, id:int)->TodoListDtoOut:
+        todolist:TodoList = self.todo_list_repository.find_todolist_by_id(id)
+        if todolist is None:
+            return None
+
+        return self.todo_list_mapper.to_dto_out(todolist)
+            

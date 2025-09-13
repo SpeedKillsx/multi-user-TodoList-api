@@ -11,6 +11,8 @@ class TodoListResource:
     def __init__(self):
         self.todo_router = APIRouter(prefix="/todo")
         self.todo_router.add_api_route('/add',endpoint= self.add_todoList, methods=['POST'], response_model=TodoListDtoOut)
+        self.todo_router.add_api_route('/{id}',endpoint= self.get_todolist, methods=['GET'], response_model=TodoListDtoOut)
+        
         
     def _get_service(self, session:Session):
         repository = TodoListRepository(session)
@@ -23,3 +25,7 @@ class TodoListResource:
         
         todoList:TodoListDtoOut = _service.insert_todo(todoList_dto_in) 
         return todoList
+    async def get_todolist(self, id:int, session:Session=Depends(get_session))->TodoListDtoOut:
+        _service = self._get_service(session)
+        
+        return _service.find_by_id(id)
