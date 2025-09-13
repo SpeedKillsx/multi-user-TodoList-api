@@ -4,6 +4,8 @@ from src.app.main.dto.UserDtoIn import UserDtoIn
 from src.app.main.dto.UserDtoOut import UserDtoOut
 from src.app.main.mappers.UserMapper import UserMapper
 from src.app.main.dto.LoginDtoIn import LoginDtoIn
+from src.app.main.dto.UserLogInDtoOut import UserLogInDtouOut
+from src.app.main.config.auth.auth_handler import *
 class UserService:
     def __init__(self, user_repository:UserRepository):
         self.user_repository = user_repository
@@ -40,14 +42,18 @@ class UserService:
         
         return user_dto_out
     
-    def connect_user(self, login_dto_in: LoginDtoIn)->UserDtoOut:
-        user_exist:User = self.user_repository.get_user_by_email(login_dto_in.email)
+    def connect_user(self, login_dto_in: LoginDtoIn) -> UserLogInDtouOut:
+        user_exist: User = self.user_repository.get_user_by_email(login_dto_in.email)
         if not user_exist:
             raise Exception(f"No user found with email : {login_dto_in.email}")
-        user:User = self.user_repository.find_user_by_credentials(user=user_exist)
-        
+
+        user: User = self.user_repository.find_user_by_credentials(user=user_exist)
+
         if not user:
             raise Exception("Could not connect to the application")
-            
-        user_dto_out:UserDtoOut = self.user_mapper.to_Dto_Out(user_entity=user)
-        return user_dto_out
+
+        user_dto_out: UserDtoOut = self.user_mapper.to_Dto_Out(user_entity=user)
+        token = sign_jwt(user_dto_out.id)
+
+        
+        return UserLogInDtouOut(email=user_dto_out.email, access_token=token["access_token"], type_token=token['token_type'])

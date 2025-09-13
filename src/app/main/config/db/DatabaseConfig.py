@@ -10,6 +10,7 @@ class DatabaseConfig():
         self.engine = create_engine(self.database_url)
     
     def create_all_tables(self):
+        print("Creating database..")
         SQLModel.metadata.create_all(self.engine)
     
     def get_session(self):
