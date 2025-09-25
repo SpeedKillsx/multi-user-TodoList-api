@@ -1,6 +1,7 @@
 from src.app.main.repository.TodoListRepository import TodoListRepository
 from src.app.main.dto.TodoListDtoIn import TodoListDtoIn
 from src.app.main.dto.TodoListDtoOut import TodoListDtoOut
+from src.app.main.dto.TodoListNames import TodoListNames
 from src.app.main.model.TodoList import TodoList
 from src.app.main.mappers.TodoListMapper import TodoListMapper
 
@@ -24,4 +25,14 @@ class TodoListService:
             return None
 
         return self.todo_list_mapper.to_dto_out(todolist)
+    
+    def find_user_todolist(self, user_id:int)->list[TodoListNames]:
+        todos_names:list[TodoListNames] = self.todo_list_repository.find_todolist_by_user(user_id)
+        if len(todos_names) == 0:
+            return {"message":"Not found"}
+        else:
+            print("exist")
+            print(todos_names)
+        print(todos_names[0])
+        return todos_names
             

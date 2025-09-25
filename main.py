@@ -5,6 +5,16 @@ from src.app.main.resource.UserResource import UserResource
 from src.app.main.resource.TodoListResource import TodoListResource
 from src.app.main.dependancy.database_dependancy import database_config, get_session
 from src.app.main.resource.TaskResource import TaskResource
+import logging
+import logging.config
+import yaml
+
+with open("log_config.yml", "r") as f:
+    config = yaml.safe_load(f.read())
+    logging.config.dictConfig(config)
+
+logger = logging.getLogger("myapp") 
+logger.info("Logger myapp initialisé")
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     database_config.create_all_tables()
