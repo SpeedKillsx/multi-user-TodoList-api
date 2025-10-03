@@ -23,8 +23,10 @@ class TodoListRepository:
     
     def find_todolist_by_user(self, user_id:int):
         logger.info("FFF")
-        statement = select(TodoList.todolist_name).where(TodoList.id_user == user_id)
+        statement = select(TodoList).where(TodoList.id_user == user_id)
         result = self.session_db.exec(statement).all()
-        todos:list[TodoListNames] = [TodoListNames(todolist_name=name) for name in result]
-        logger.info(f"Todos names = {todos}")
+        if result is None:
+            logger.info("Result is None")
+        todos:list[TodoListNames] = [TodoListNames(todolist_name=name.todolist_name, id=name.id) for name in result]
+        
         return todos   

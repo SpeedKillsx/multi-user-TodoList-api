@@ -30,9 +30,6 @@ class TodoListService:
         todos_names:list[TodoListNames] = self.todo_list_repository.find_todolist_by_user(user_id)
         if len(todos_names) == 0:
             return {"message":"Not found"}
-        else:
-            print("exist")
-            print(todos_names)
-        print(todos_names[0])
+        
         return todos_names
             
