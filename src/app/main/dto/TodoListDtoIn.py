@@ -5,7 +5,7 @@ from datetime import date
 class TodoListDtoIn(SQLModel):
     id_user:int
     todolist_name:str
-    creation_date:date
+    creation_date:date=date.today
 
 
     
