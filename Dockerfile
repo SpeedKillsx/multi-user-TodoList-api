@@ -14,6 +14,7 @@ RUN apt-get update && \
 
 COPY src ./src
 COPY .env .
+ENV APP_ENV=production
 COPY log_config.yml .
 COPY main.py .
 
