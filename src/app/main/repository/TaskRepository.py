@@ -12,3 +12,15 @@ class TaskRepository:
         
         return task
     
+    def update_task(self, id:int , state:bool):
+        stmnt  = select(Task).where(Task.id == id)
+        result = self.db_session.exec(statement=stmnt)
+        
+        task:Task = result.one()
+        
+        task.is_done = state
+        self.db_session.add(task)
+        self.db_session.commit()
+        self.db_session.refresh(task)
+        
+        return task
